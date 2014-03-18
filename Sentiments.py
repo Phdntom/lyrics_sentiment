@@ -1,6 +1,6 @@
 from __future__ import division, print_function
 
-def get_scores(fname):
+def load_word_scores(fname):
     '''
     Parameters
     ----------
@@ -19,7 +19,7 @@ def get_scores(fname):
             
     return scores
 
-def score_a_song(scores, song):
+def tuple_score(scores, song):
     '''
     '''
     lyrics = song.lyrics.split()
@@ -43,6 +43,20 @@ def score_a_song(scores, song):
         
     return (pos_score, abs(neg_score))
 
+def scalar_score(scores, song):
+    lyrics = song.lyrics.split()
+    word_count = 0
+    score = 0
+    for word in lyrics:
+        if word in scores:
+            score_val = scores[word]
+            score += score_val
+            word_count += 1
+    if word_count > 0:
+        score /= word_count
+        
+    return score
+
 def score_songs(scores, songs):
     '''
     Parameters
@@ -64,7 +78,7 @@ def score_songs(scores, songs):
     '''
     song_scores = []
     for song in songs:
-        song_scores.append(score_a_song(scores, song))
+        song_scores.append(tuple_score(scores, song))
     
     return song_scores
 
